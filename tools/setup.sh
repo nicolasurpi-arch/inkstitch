@@ -41,15 +41,7 @@ if [ ! -d venv ]; then
 fi
 
 echo "==> Installing Python dependencies (this can take a few minutes, wxPython builds from source on some platforms)..."
-# --use-deprecated=legacy-resolver works around a real bug, not a version
-# pin we chose: inkex's own git-hosted metadata declares its lxml
-# requirement as "lxml (>=4.5.0,<5.0.0 || >=5.0.0,<6.0.0)", using "||" to
-# OR-combine two ranges - not valid PEP 440, and pip's modern resolver
-# refuses to parse it (confirmed failing the same way on pip 24.0 through
-# 26.2.1, so this isn't fixed by picking an older/newer pip). The legacy
-# resolver doesn't require fully parsing every transitive dependency's
-# metadata up front, so it installs fine despite the malformed specifier.
-venv/bin/pip install --use-deprecated=legacy-resolver -r requirements.txt -r tools/requirements.txt
+venv/bin/pip install -r requirements.txt -r tools/requirements.txt
 
 echo "==> Fetching the embroidery-fonts submodule..."
 git submodule update --init --recursive

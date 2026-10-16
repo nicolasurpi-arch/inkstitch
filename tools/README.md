@@ -39,19 +39,15 @@ build, which is macOS-only):
 
 ```bash
 python3 -m venv venv
-venv/bin/pip install --use-deprecated=legacy-resolver -r requirements.txt -r tools/requirements.txt
+venv/bin/pip install -r requirements.txt -r tools/requirements.txt
 git submodule update --init --recursive
 ```
 
-The `--use-deprecated=legacy-resolver` flag isn't optional: `inkex`'s own
-git-hosted metadata declares its `lxml` requirement as
-`lxml (>=4.5.0,<5.0.0 || >=5.0.0,<6.0.0)`, which mixes two ranges with `||` -
-not valid PEP 440. Every current pip version (checked 24.0 through 26.2.1)
-refuses to parse that with the normal resolver and the install fails outright
-on the `inkex` line. The legacy resolver doesn't require fully parsing every
-transitive dependency's metadata up front, so it installs fine. If this ever
-starts failing cleanly instead, it probably means upstream fixed their
-metadata and the flag can be dropped.
+`requirements.txt` points `inkex` at a wheel vendored in `tools/vendor/`
+instead of building it from git directly - see the comment above that line
+in `requirements.txt` and `tools/vendor/README.md` for why (building it
+fresh from git intermittently produces invalid metadata and the install
+fails outright - not a version pin we chose, a real upstream bug).
 
 ## Running it
 

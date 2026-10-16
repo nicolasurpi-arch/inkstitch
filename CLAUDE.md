@@ -29,12 +29,15 @@ venv/bin/python tools/webapp.py
 
 and open <http://127.0.0.1:5001> — or on macOS, double-click `Ink2Jef.app`.
 
-If `tools/setup.sh` or a manual `pip install -r requirements.txt` fails on
-the `inkex` line with an "invalid metadata" / "Expected matching RIGHT_
-PARENTHESIS" error, see the explanation and the one-line fix
-(`--use-deprecated=legacy-resolver`) in [tools/README.md](tools/README.md#setup)
-— it's a real bug in `inkex`'s upstream git metadata, not a mistake in this
-repo's setup, and it's already handled by `tools/setup.sh` itself.
+`requirements.txt` installs `inkex` from a wheel vendored in
+`tools/vendor/` rather than building it from git - building it fresh from
+git intermittently generates invalid metadata and pip refuses to install it
+(confirmed on pip 24.0 through 26.2.1, not a version issue - the upstream
+build itself is non-deterministic; see `tools/vendor/README.md`). If you
+ever see an "invalid metadata" / "RIGHT_PARENTHESIS" error mentioning
+`inkex` or `lxml`, something's installing straight from git instead of
+using the vendored wheel - check `requirements.txt` still points at
+`tools/vendor/inkex-1.4.1-py3-none-any.whl`.
 
 ## Working in tools/
 

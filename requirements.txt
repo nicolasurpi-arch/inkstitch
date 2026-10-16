@@ -3,7 +3,19 @@ pystitch
 # For macOS and Windows our installer bundles the version specified here
 # but some Linux distros package Ink/Stitch as depending on the inkex that's bundled with Inkscape.
 # So at least for releases we should use a tagged version here such as EXTENSIONS_AT_INKSCAPE_$version.
-inkex @ git+https://gitlab.com/inkscape/extensions.git@EXTENSIONS_AT_INKSCAPE_1.4.1
+# Pinned to a local wheel instead of the git ref below - building inkex's
+# metadata straight from that git repo (any commit, confirmed on the exact
+# commit EXTENSIONS_AT_INKSCAPE_1.4.1 currently resolves to) intermittently
+# emits an invalid dependency specifier for lxml - "lxml (>=4.5.0,<5.0.0 ||
+# >=5.0.0,<6.0.0)", combining two ranges with "||", which isn't valid PEP
+# 440 - and pip refuses to install it when that happens. It isn't a pip
+# version issue (checked 24.0 through 26.2.1, same failure); the metadata
+# generation itself (Poetry's build backend, invoked fresh by pip's build
+# isolation each time, no lock file) is non-deterministic. The vendored
+# wheel below is a verified-good build of that same tag (see
+# tools/vendor/README.md) and sidesteps rebuilding it on every install.
+# inkex @ git+https://gitlab.com/inkscape/extensions.git@EXTENSIONS_AT_INKSCAPE_1.4.1
+inkex @ file:./tools/vendor/inkex-1.4.1-py3-none-any.whl
 
 # for linux user it may be tricky to install wxPython from sources
 # prebuilt packages: https://wxpython.org/pages/downloads/index.html
