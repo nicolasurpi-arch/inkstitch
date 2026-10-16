@@ -1,0 +1,7 @@
+# Extra dependencies for tools/ (image_to_jef.py, text_to_jef.py, webapp.py,
+# font_catalog_pdf.py) that aren't already in the repo's root requirements.txt.
+# Install both:
+#   pip install -r requirements.txt -r tools/requirements.txt
+pillow
+scipy
+reportlab
